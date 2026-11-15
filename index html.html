@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Safari Sums – Grade 2 Maths</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand:#FBF1DC; --sand2:#F3E2BC; --ink:#2B2A26; --green:#2F6B4F; --green2:#E3F1E8;
+    --orange:#E8792E; --orange2:#FDE7D6; --sky:#3E8FB8; --sky2:#DDF0F8; --red:#C8463D; --red2:#FBE3E1;
+    --purple:#6B4FA0; --card:#FFFDF8; --line:#E2D3B0; --shadow:0 3px 0 #E2D3B0;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--sand);color:var(--ink);font-family:"Andika","Trebuchet MS",system-ui,sans-serif;font-size:19px;line-height:1.4}
+  body{min-height:100vh;-webkit-tap-highlight-color:transparent}
+  h1,h2,h3,.display{font-family:"Fredoka","Andika",system-ui,sans-serif;font-weight:600;letter-spacing:.2px}
+  button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+  .wrap{max-width:760px;margin:0 auto;padding:14px 14px 40px}
+  .top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .top .title{font-family:"Fredoka",sans-serif;font-weight:700;font-size:1.15rem;color:var(--green);flex:1}
+  .stars{font-family:"Fredoka",sans-serif;font-weight:600;background:#fff;border:2px solid var(--line);border-radius:999px;padding:4px 12px;white-space:nowrap}
+  .progress{height:14px;background:var(--sand2);border-radius:999px;overflow:hidden;margin-bottom:14px;border:2px solid var(--line)}
+  .progress > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),#59A57D);transition:width .4s}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+  .qhead{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+  .qnum{flex:none;background:var(--orange);color:#fff;font-family:"Fredoka",sans-serif;font-weight:700;border-radius:14px;padding:4px 10px;font-size:.95rem}
+  .qtext{flex:1;font-size:1.15rem;font-weight:700}
+  .speak{flex:none;width:52px;height:52px;border-radius:50%;border:none;background:var(--sky);color:#fff;font-size:1.5rem;box-shadow:0 3px 0 #2C6C8C}
+  .speak:active{transform:translateY(2px);box-shadow:none}
+  .speak.on{animation:pulse 1s infinite}
+  @keyframes pulse{50%{transform:scale(1.08)}}
+  .skill{display:inline-block;font-size:.78rem;background:var(--green2);color:var(--green);border-radius:8px;padding:2px 8px;margin-bottom:10px}
+  .scene{background:linear-gradient(#DDF0F8 0 55%, #F3E2BC 55%);border-radius:16px;padding:12px;margin:8px 0 14px;text-align:center;font-size:1.9rem;line-height:1.3;word-break:break-word}
+  .scene small{display:block;font-size:1rem;color:#5b5243}
+  .actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .btn{border:none;border-radius:16px;padding:14px 20px;font-family:"Fredoka",sans-serif;font-weight:600;font-size:1.1rem;min-height:56px}
+  .btn.go{background:var(--green);color:#fff;box-shadow:0 4px 0 #1F4A36;flex:1}
+  .btn.next{background:var(--orange);color:#fff;box-shadow:0 4px 0 #B65A1D;flex:1}
+  .btn.ghost{background:#fff;border:2px solid var(--line)}
+  .btn:active{transform:translateY(3px);box-shadow:none}
+  .btn[disabled]{opacity:.45;pointer-events:none}
+  .feedback{display:none;margin-top:14px;border-radius:16px;padding:12px 14px;font-weight:700}
+  .feedback.ok{display:block;background:var(--green2);color:var(--green);border:2px solid #9ACDB1}
+  .feedback.try{display:block;background:var(--orange2);color:#8A4313;border:2px solid #F2B98F}
+  .feedback.show{display:block;background:var(--sky2);color:#245A75;border:2px solid #9CCBE2}
+  /* options */
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .opt{background:#fff;border:3px solid var(--line);border-radius:18px;padding:16px 8px;font-family:"Fredoka",sans-serif;font-size:1.7rem;font-weight:600;min-height:72px}
+  .opt.sel{border-color:var(--sky);background:var(--sky2)}
+  .opt.right{border-color:var(--green);background:var(--green2)}
+  .opt.wrong{border-color:var(--red);background:var(--red2)}
+  /* base ten */
+  .b10{display:flex;align-items:flex-end;justify-content:center;gap:16px;flex-wrap:wrap;min-height:120px;padding:8px}
+  .tens,.ones{display:flex;gap:5px;align-items:flex-end;flex-wrap:wrap;justify-content:center}
+  .ones{max-width:90px}
+  .rod{width:16px;height:110px;background:repeating-linear-gradient(#F0A04B 0 10px,#C9772A 10px 11px);border:2px solid #A35E1E;border-radius:4px}
+  .cube{width:16px;height:16px;background:#5BA3D0;border:2px solid #2C6C8C;border-radius:3px}
+  .builder{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+  .builder .col{background:#fff;border:2px solid var(--line);border-radius:16px;padding:10px;text-align:center}
+  .builder .col b{display:block;font-family:"Fredoka",sans-serif;font-size:1.05rem}
+  .pm{display:flex;gap:8px;justify-content:center;margin-top:8px}
+  .pm button{width:56px;height:56px;border-radius:14px;border:2px solid var(--line);background:var(--sand);font-size:1.6rem;font-weight:700}
+  .count{font-family:"Fredoka",sans-serif;font-size:1.5rem;margin-top:6px}
+  /* drag & drop */
+  .tray{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:12px;background:var(--sand2);border-radius:16px;min-height:78px;margin-top:12px}
+  .tile{min-width:64px;height:64px;padding:0 12px;display:flex;align-items:center;justify-content:center;background:#fff;border:3px solid var(--orange);border-radius:16px;font-family:"Fredoka",sans-serif;font-weight:600;font-size:1.5rem;box-shadow:0 3px 0 #C9692A;touch-action:none;user-select:none;-webkit-user-select:none}
+  .tile.picked{outline:4px solid var(--sky);outline-offset:2px}
+  .tile.ghost{position:fixed;z-index:50;pointer-events:none;transform:scale(1.1) rotate(-3deg);opacity:.95}
+  .tile.used{visibility:hidden}
+  .eq{display:flex;align-items:center;justify-content:center;gap:10px;font-family:"Fredoka",sans-serif;font-size:1.7rem;font-weight:600;margin:10px 0;flex-wrap:wrap}
+  .slot{min-width:72px;height:68px;border:3px dashed var(--sky);border-radius:16px;background:var(--sky2);display:flex;align-items:center;justify-content:center;padding:0 6px}
+  .slot.hover{background:#BFE2F3;border-style:solid}
+  .slot.right{border:3px solid var(--green);background:var(--green2)}
+  .slot.wrong{border:3px solid var(--red);background:var(--red2)}
+  .slot .tile{box-shadow:none}
+  .pool{border:3px dashed var(--sky);background:linear-gradient(#9FD3EC,#5BA3D0);border-radius:50% / 30%;min-height:150px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:28px 18px;position:relative}
+  .pool::before{content:"🦛";position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:2.4rem}
+  .pool.hover{outline:4px solid var(--orange)}
+  .orderrow{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
+  .orderrow .lt{font-family:"Fredoka",sans-serif;font-size:1.4rem;color:#8a7a5a}
+  /* keypad */
+  .answerbox{margin:6px auto 10px;width:150px;height:72px;border:3px solid var(--sky);border-radius:18px;background:#fff;display:flex;align-items:center;justify-content:center;font-family:"Fredoka",sans-serif;font-size:2.2rem;font-weight:700}
+  .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:300px;margin:0 auto}
+  .keypad button{height:60px;border-radius:14px;border:2px solid var(--line);background:#fff;font-family:"Fredoka",sans-serif;font-size:1.6rem;font-weight:600;box-shadow:0 3px 0 var(--line)}
+  .keypad button:active{transform:translateY(2px);box-shadow:none}
+  /* number line */
+  .nl{position:relative;overflow-x:auto;padding:58px 6px 6px;-webkit-overflow-scrolling:touch}
+  .nl-inner{position:relative;display:flex;min-width:640px;border-top:4px solid var(--ink);margin-top:10px}
+  .nl-pt{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+  .nl-pt::before{content:"";width:3px;height:14px;background:var(--ink);margin-top:-9px}
+  .nl-pt.five::before{height:22px;margin-top:-13px}
+  .nl-pt button{margin-top:4px;width:30px;height:38px;border-radius:9px;border:2px solid transparent;background:transparent;font-size:.8rem;font-weight:700;padding:0}
+  .nl-pt.five button{font-size:.95rem}
+  .nl-pt button.sel{border-color:var(--sky);background:var(--sky2)}
+  .nl-pt button.right{border-color:var(--green);background:var(--green2)}
+  .nl-pt button.wrong{border-color:var(--red);background:var(--red2)}
+  .zebra{position:absolute;top:8px;font-size:2rem;transition:left .6s cubic-bezier(.4,1.6,.6,1);transform:translateX(-50%)}
+  /* true/false */
+  .tf{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .tf .opt{font-size:2.6rem}
+  .tf .opt span{display:block;font-size:1rem}
+  /* splash / end */
+  .hero{text-align:center;padding:10px 4px}
+  .hero .big{font-size:3.4rem;line-height:1.1}
+  .hero h1{color:var(--green);margin:.2em 0;font-size:2rem}
+  .namebox{width:100%;max-width:320px;height:58px;border-radius:16px;border:3px solid var(--line);padding:0 14px;font-size:1.3rem;font-family:inherit;text-align:center;margin:10px 0}
+  .avatars{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:6px 0 12px}
+  .avatars button{font-size:2.2rem;width:64px;height:64px;border-radius:16px;border:3px solid var(--line);background:#fff}
+  .avatars button.sel{border-color:var(--orange);background:var(--orange2)}
+  .feel{display:flex;gap:10px;justify-content:center;margin:12px 0}
+  .feel button{font-size:2.6rem;width:84px;height:92px;border-radius:18px;border:3px solid var(--line);background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .feel button span{font-size:.8rem}
+  .feel button.sel{border-color:var(--green);background:var(--green2)}
+  table.report{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:10px}
+  table.report th,table.report td{border-bottom:1px solid var(--line);padding:7px 5px;text-align:left;vertical-align:top}
+  table.report th{background:var(--sand2)}
+  .teacher{margin-top:16px;background:#fff;border:2px dashed var(--line);border-radius:16px;padding:12px}
+  .teacher h3{margin:.1em 0 .4em;color:var(--purple)}
+  .note{font-size:.85rem;color:#6a604c}
+  .hidden{display:none!important}
+  .confetti{position:fixed;top:-20px;font-size:1.6rem;pointer-events:none;animation:fall 1.6s linear forwards;z-index:60}
+  @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+  .shake{animation:shake .4s}
+  @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  @media (max-width:420px){ html,body{font-size:17px} .opt{font-size:1.45rem} .eq{font-size:1.4rem} .tile{min-width:56px;height:58px;font-size:1.3rem} .slot{min-width:62px;height:62px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="title">🦒 Safari Sums</div>
+    <div class="stars" id="starCount">⭐ 0</div>
+  </div>
+  <div class="progress"><i id="bar"></i></div>
+  <div id="app"></div>
+</div>
+
+<script>
+(() => {
+"use strict";
+const $ = (s, el=document) => el.querySelector(s);
+const h = (tag, attrs={}, ...kids) => {
+  const e = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs)) {
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (k === "html") e.innerHTML = v;
+    else e.setAttribute(k, v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+};
+
+/* ---------- sound & speech ---------- */
+let actx = null;
+function tone(freqs, dur=0.12){
+  try{
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    let t = actx.currentTime;
+    freqs.forEach(f=>{
+      const o=actx.createOscillator(), g=actx.createGain();
+      o.type="sine"; o.frequency.value=f; o.connect(g); g.connect(actx.destination);
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.25,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.start(t); o.stop(t+dur+0.02); t+=dur*0.9;
+    });
+  }catch(e){}
+}
+const sndRight = () => tone([523,659,784,1047],0.13);
+const sndTry = () => tone([330,262],0.18);
+const sndPop = () => tone([880],0.05);
+
+let voice = null;
+function pickVoice(){
+  try{
+    const vs = speechSynthesis.getVoices();
+    voice = vs.find(v=>/en-ZA/i.test(v.lang)) || vs.find(v=>/en-GB/i.test(v.lang)) || vs.find(v=>/^en/i.test(v.lang)) || null;
+  }catch(e){}
+}
+if ("speechSynthesis" in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text, btn){
+  if (!("speechSynthesis" in window)) return;
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text.replace(/−/g," minus ").replace(/\+/g," plus ").replace(/=/g," equals ").replace(/□|\?/g," what number "));
+    if (voice) u.voice = voice;
+    u.rate = 0.88; u.pitch = 1.1;
+    if (btn){ btn.classList.add("on"); u.onend = u.onerror = () => btn.classList.remove("on"); }
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function confetti(){
+  const bits=["⭐","🌟","🎉","🦓","🦒","🐘"];
+  for(let i=0;i<14;i++){
+    const c=h("div",{class:"confetti"},bits[i%bits.length]);
+    c.style.left=Math.random()*100+"vw"; c.style.animationDelay=(Math.random()*0.4)+"s";
+    document.body.append(c); setTimeout(()=>c.remove(),2200);
+  }
+}
+
+/* ---------- drag & drop (pointer + tap) ---------- */
+function makeDnD(root, onChange){
+  let picked = null, drag = null;
+  const zones = () => [...root.querySelectorAll("[data-zone]")];
+  function place(tile, zone){
+    if (zone.dataset.zone === "slot"){
+      const old = zone.querySelector(".tile");
+      if (old && old !== tile) returnToTray(old);
+      zone.innerHTML = ""; zone.append(tile);
+    } else zone.append(tile);
+    zone.classList.remove("right","wrong");
+    sndPop(); onChange && onChange();
+  }
+  function returnToTray(tile){ const tray = root.querySelector("[data-zone=tray]"); tray.append(tile); }
+  function clearPick(){ if(picked){picked.classList.remove("picked"); picked=null;} }
+  root.addEventListener("pointerdown", e => {
+    const tile = e.target.closest(".tile"); if (!tile || !root.contains(tile)) return;
+    e.preventDefault();
+    drag = {tile, x:e.clientX, y:e.clientY, moved:false, ghost:null, id:e.pointerId};
+    try{ tile.setPointerCapture(e.pointerId); }catch(_){}
+  });
+  root.addEventListener("pointermove", e => {
+    if (!drag || e.pointerId!==drag.id) return;
+    const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+    if (!drag.moved && Math.hypot(dx,dy) > 8){
+      drag.moved = true; clearPick();
+      const r = drag.tile.getBoundingClientRect();
+      drag.ox = e.clientX - r.left; drag.oy = e.clientY - r.top;
+      drag.ghost = drag.tile.cloneNode(true); drag.ghost.classList.add("ghost");
+      drag.ghost.style.width = r.width+"px"; document.body.append(drag.ghost);
+      drag.tile.classList.add("used");
+    }
+    if (drag.moved){
+      drag.ghost.style.left = (e.clientX-drag.ox)+"px"; drag.ghost.style.top = (e.clientY-drag.oy)+"px";
+      const z = zoneAt(e.clientX,e.clientY); zones().forEach(zz=>zz.classList.toggle("hover", zz===z));
+    }
+  });
+  function zoneAt(x,y){ const el = document.elementFromPoint(x,y); return el && el.closest("[data-zone]") && root.contains(el.closest("[data-zone]")) ? el.closest("[data-zone]") : null; }
+  const end = e => {
+    if (!drag || e.pointerId!==drag.id) return;
+    const d = drag; drag = null;
+    if (d.moved){
+      d.ghost.remove(); d.tile.classList.remove("used");
+      zones().forEach(z=>z.classList.remove("hover"));
+      const z = e.type==="pointerup" ? zoneAt(e.clientX,e.clientY) : null;
+      if (z) place(d.tile, z);
+    } else {
+      // tap: select tile, or if a tile was already picked and this tile sits in a slot, swap
+      if (picked === d.tile){ clearPick(); return; }
+      if (picked && d.tile.parentElement.dataset.zone==="slot"){ place(picked, d.tile.parentElement); clearPick(); return; }
+      clearPick(); picked = d.tile; picked.classList.add("picked");
+    }
+  };
+  root.addEventListener("pointerup", end);
+  root.addEventListener("pointercancel", end);
+  root.addEventListener("click", e => {
+    const z = e.target.closest("[data-zone]");
+    if (picked && z && !e.target.closest(".tile")){ place(picked, z); clearPick(); }
+  });
+}
+
+/* ---------- question helpers ---------- */
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+function b10(n){ const t=Math.floor(n/10), o=n%10;
+  return h("div",{class:"b10"}, h("div",{class:"tens"}, Array.from({length:t},()=>h("div",{class:"rod"}))), h("div",{class:"ones"}, Array.from({length:o},()=>h("div",{class:"cube"})))); }
+function choice(box, values, correct){
+  let sel=null; const grid=h("div",{class:"opts"});
+  shuffle(values).forEach(v=>{ const b=h("button",{class:"opt",type:"button"},String(v));
+    b.onclick=()=>{ grid.querySelectorAll(".opt").forEach(x=>x.classList.remove("sel","wrong")); b.classList.add("sel"); sel=v; sndPop(); };
+    grid.append(b); });
+  box.append(grid);
+  return { check:()=>sel===correct, answered:()=>sel!==null, given:()=>sel,
+    mark(ok){ grid.querySelectorAll(".opt").forEach(b=>{ if(b.textContent===String(sel)) b.classList.add(ok?"right":"wrong"); }); },
+    reveal(){ grid.querySelectorAll(".opt").forEach(b=>{ if(b.textContent===String(correct)) b.classList.add("right"); }); } };
+}
+function keypad(box){
+  let val=""; const disp=h("div",{class:"answerbox"},"?");
+  const kp=h("div",{class:"keypad"});
+  const upd=()=>{ disp.textContent = val || "?"; disp.style.borderColor=""; };
+  [1,2,3,4,5,6,7,8,9,"⌫",0,"✕"].forEach(k=>kp.append(h("button",{type:"button","aria-label":String(k),onclick:()=>{
+    sndPop(); if(k==="⌫") val=val.slice(0,-1); else if(k==="✕") val=""; else if(val.length<2) val+=k; upd(); }},String(k))));
+  box.append(disp,kp);
+  return { get:()=>val===""?null:Number(val), set:v=>{val=String(v);upd();}, mark:ok=>disp.style.borderColor= ok?"var(--green)":"var(--red)" };
+}
+
+/* ---------- the questions (CAPS Gr 2, Term 3–4: Addition & Subtraction to 99) ---------- */
+const Q = [
+{
+  skill:"Place value – tens and ones", caps:"Recognise the place value of 2-digit numbers (tens and ones)",
+  text:"How many blocks are there? Count the tens, then count the ones.",
+  render(box){ box.append(h("div",{class:"scene",style:"background:#fff"}, b10(47), h("small",{},"Each long rod = 10. Each small cube = 1."))); return choice(box,[47,74,11,407],47); },
+  hint:"Count the long rods in tens: 10, 20, 30, 40. Then count on the small cubes.",
+  why:"4 tens and 7 ones make 47."
+},
+{
+  skill:"Number bonds to 10 and 20", caps:"Mental mathematics: number bonds to 20",
+  text:"Drag a number into each box to make the sums correct.",
+  render(box){
+    const rows=[[6,"+",4,10],[13,"+",7,20],[11,"+",9,20]]; // middle is the missing one (first row: 6 + ? = 10 etc.)
+    const area=h("div");
+    const slots=[];
+    rows.forEach(([a,op,ans,tot])=>{ const s=h("div",{class:"slot","data-zone":"slot","data-ans":ans,"aria-label":"drop box"});
+      slots.push(s); area.append(h("div",{class:"eq"}, String(a), op, s, "=", String(tot))); });
+    const tray=h("div",{class:"tray","data-zone":"tray"});
+    shuffle([4,7,9,3,5]).forEach(n=>tray.append(h("div",{class:"tile","data-val":n},String(n))));
+    area.append(h("div",{class:"note",style:"text-align:center"},"Drag a number, or tap a number and then tap a box."), tray);
+    box.append(area); makeDnD(area);
+    const val=s=>{const t=s.querySelector(".tile"); return t?Number(t.dataset.val):null;};
+    return { answered:()=>slots.every(s=>val(s)!==null), check:()=>slots.every(s=>val(s)===Number(s.dataset.ans)),
+      given:()=>slots.map(val).join(", "),
+      mark(){ slots.forEach(s=>s.classList.add(val(s)===Number(s.dataset.ans)?"right":"wrong")); },
+      reveal(){ slots.forEach(s=>{ s.innerHTML=""; s.append(h("div",{class:"tile"},s.dataset.ans)); s.classList.remove("wrong"); s.classList.add("right"); }); } };
+  },
+  hint:"Count on from the first number until you reach 10 or 20. How many jumps did you make?",
+  why:"6 + 4 = 10,  13 + 7 = 20,  11 + 9 = 20."
+},
+{
+  skill:"Adding on a number line", caps:"Addition up to 99 using a number line (jump in tens, then ones)",
+  text:"Zara the zebra starts at 34. She jumps 10, then she jumps 5 more. Tap the number where Zara lands.",
+  render(box){
+    let sel=null; const start=30, end=50;
+    const wrap=h("div",{class:"nl"}); const inner=h("div",{class:"nl-inner"});
+    const zebra=h("div",{class:"zebra"},"🦓");
+    for(let n=start;n<=end;n++){
+      const b=h("button",{type:"button","aria-label":String(n)},String(n));
+      b.onclick=()=>{ inner.querySelectorAll("button").forEach(x=>x.classList.remove("sel","wrong")); b.classList.add("sel"); sel=n; sndPop(); moveZ(n); };
+      inner.append(h("div",{class:"nl-pt"+(n%5===0?" five":"")}, b));
+    }
+    wrap.append(zebra,inner);
+    box.append(h("div",{class:"scene"},"🦓 34  ➜  +10  ➜  +5", h("small",{},"Swipe the number line if you need to see more.")), wrap);
+    const moveZ=n=>{ const pts=inner.children; const p=pts[n-start]; zebra.style.left=(p.offsetLeft+p.offsetWidth/2+6)+"px"; };
+    requestAnimationFrame(()=>moveZ(34));
+    return { answered:()=>sel!==null, check:()=>sel===49, given:()=>sel,
+      mark(ok){ inner.querySelectorAll("button")[sel-start].classList.add(ok?"right":"wrong"); },
+      reveal(){ moveZ(34); setTimeout(()=>moveZ(44),500); setTimeout(()=>{moveZ(49); inner.querySelectorAll("button")[49-start].classList.add("right");},1100); } };
+  },
+  hint:"Jumping 10 changes the tens: 34 → 44. Now count on 5 more.",
+  why:"34 + 10 = 44, and 44 + 5 = 49."
+},
+{
+  skill:"Word problem – addition", caps:"Solve word problems in context: addition with answers up to 99",
+  text:"There are 23 giraffes at the waterhole. 15 more giraffes come to drink. How many giraffes are there now? Type your answer.",
+  render(box){
+    box.append(h("div",{class:"scene"},"🦒🦒 ✚ 🦒", h("small",{},"23 giraffes  +  15 more giraffes")));
+    const kp=keypad(box);
+    return { answered:()=>kp.get()!==null, check:()=>kp.get()===38, given:()=>kp.get(), mark:ok=>kp.mark(ok), reveal(){kp.set(38);kp.mark(true);} };
+  },
+  hint:"Break up the numbers: add the tens (20 + 10) and then add the ones (3 + 5).",
+  why:"20 + 10 = 30 and 3 + 5 = 8, so 30 + 8 = 38 giraffes."
+},
+{
+  skill:"Subtracting multiples of 10", caps:"Subtraction up to 99; subtract multiples of 10",
+  text:"There were 45 elephants at the river. 20 elephants walked away. How many elephants are left?",
+  render(box){ box.append(h("div",{class:"scene"},"🐘🐘🐘 ➜ 🐘🐘", h("small",{},"45 elephants  −  20 walk away"))); return choice(box,[25,65,20,15],25); },
+  hint:"Take away 2 tens from 4 tens. The ones do not change.",
+  why:"45 − 20 = 25. 4 tens take away 2 tens is 2 tens, and the 5 ones stay."
+},
+{
+  skill:"Equivalent sums (= 50)", caps:"Addition and subtraction facts; doubling; the equals sign",
+  text:"Hungry Hippo only eats sums that equal 50. Drag every sum that makes 50 into the pool.",
+  render(box){
+    const items=[["25 + 25",1],["30 + 20",1],["60 − 10",1],["40 + 5",0],["55 + 5",0]];
+    const area=h("div"); const pool=h("div",{class:"pool","data-zone":"pool"});
+    const tray=h("div",{class:"tray","data-zone":"tray"});
+    shuffle(items).forEach(([t,ok])=>tray.append(h("div",{class:"tile","data-ok":ok},t)));
+    area.append(pool, h("div",{class:"note",style:"text-align:center;margin-top:8px"},"Leave the sums that are NOT 50 here 👇"), tray);
+    box.append(area); makeDnD(area);
+    const inPool=()=>[...pool.querySelectorAll(".tile")];
+    return { answered:()=>inPool().length>0, check:()=>inPool().length===3 && inPool().every(t=>t.dataset.ok==="1"),
+      given:()=>inPool().map(t=>t.textContent).join(", "),
+      mark(){ inPool().forEach(t=>t.style.borderColor = t.dataset.ok==="1"?"var(--green)":"var(--red)"); },
+      reveal(){ [...area.querySelectorAll(".tile")].forEach(t=>{ if(t.dataset.ok==="1"){pool.append(t);t.style.borderColor="var(--green)";} else {tray.append(t);t.style.borderColor="";} }); } };
+  },
+  hint:"Work out each sum. Three of them make 50.",
+  why:"25 + 25 = 50, 30 + 20 = 50 and 60 − 10 = 50. But 40 + 5 = 45 and 55 + 5 = 60."
+},
+{
+  skill:"Missing number (inverse operations)", caps:"Use the relationship between addition and subtraction; find the missing number",
+  text:"What is the missing number? 56 minus what number equals 30?",
+  render(box){
+    box.append(h("div",{class:"eq",style:"font-size:2rem"},"56 − ", h("span",{class:"slot",style:"border-style:solid;background:#fff"},"□")," = 30"));
+    const kp=keypad(box);
+    return { answered:()=>kp.get()!==null, check:()=>kp.get()===26, given:()=>kp.get(), mark:ok=>kp.mark(ok), reveal(){kp.set(26);kp.mark(true);} };
+  },
+  hint:"Think: 30 + ? = 56. Count on from 30 to 56.",
+  why:"30 + 26 = 56, so 56 − 26 = 30."
+},
+{
+  skill:"Building numbers with base-ten blocks", caps:"Break down and build up numbers (tens and ones) to add",
+  text:"Use the blocks to build the answer to 32 plus 14. Press plus and minus to add or take away tens and ones.",
+  render(box){
+    let t=0,o=0; const show=h("div",{class:"scene",style:"background:#fff;min-height:150px"});
+    const tc=h("div",{class:"count"},"0"), oc=h("div",{class:"count"},"0"), total=h("div",{class:"eq"},"Total: 0");
+    const draw=()=>{ show.innerHTML=""; show.append(b10(t*10+o)); tc.textContent=t; oc.textContent=o; total.textContent="Total: "+(t*10+o); };
+    const col=(label,get,inc,dec,c)=>h("div",{class:"col"},h("b",{},label),c,h("div",{class:"pm"},
+      h("button",{type:"button","aria-label":"take away "+label,onclick:()=>{dec();sndPop();draw();}},"−"),
+      h("button",{type:"button","aria-label":"add "+label,onclick:()=>{inc();sndPop();draw();}},"+")));
+    box.append(h("div",{class:"eq",style:"font-size:2rem"},"32 + 14 = ?"), show,
+      h("div",{class:"builder"}, col("Tens 🟧",()=>t,()=>t=Math.min(9,t+1),()=>t=Math.max(0,t-1),tc), col("Ones 🟦",()=>o,()=>o=Math.min(9,o+1),()=>o=Math.max(0,o-1),oc)), total);
+    draw();
+    return { answered:()=>t+o>0, check:()=>t===4&&o===6, given:()=>t*10+o,
+      mark(ok){ total.style.color= ok?"var(--green)":"var(--red)"; },
+      reveal(){ t=4;o=6;draw(); total.style.color="var(--green)"; } };
+  },
+  hint:"Add the tens: 3 tens + 1 ten. Add the ones: 2 ones + 4 ones.",
+  why:"3 tens + 1 ten = 4 tens, and 2 ones + 4 ones = 6 ones. 4 tens and 6 ones = 46."
+},
+{
+  skill:"Checking a calculation (reasoning)", caps:"Explain and check solutions; subtraction up to 99",
+  text:"Lebo says 48 minus 19 equals 29. Is Lebo right?",
+  render(box){
+    let sel=null; const g=h("div",{class:"tf"});
+    box.append(h("div",{class:"scene"},"👧🏾 “48 − 19 = 29”", h("small",{},"Tip: 19 is close to 20.")));
+    [["👍","Yes, Lebo is right",true],["👎","No, Lebo is wrong",false]].forEach(([e,l,v])=>{
+      const b=h("button",{class:"opt",type:"button"},e,h("span",{},l));
+      b.onclick=()=>{ g.querySelectorAll(".opt").forEach(x=>x.classList.remove("sel","wrong")); b.classList.add("sel"); sel=v; sndPop(); }; g.append(b); });
+    box.append(g);
+    return { answered:()=>sel!==null, check:()=>sel===true, given:()=>sel?"Yes":"No",
+      mark(ok){ g.querySelector(".sel").classList.add(ok?"right":"wrong"); }, reveal(){ g.querySelectorAll(".opt")[0].classList.add("right"); } };
+  },
+  hint:"Take away 20 instead: 48 − 20 = 28. You took away 1 too many, so add 1 back.",
+  why:"48 − 20 = 28, then add back 1: 29. Lebo is right!"
+},
+{
+  skill:"Ordering answers (compare numbers)", caps:"Order and compare numbers up to 99; addition and subtraction",
+  text:"Work out each sum. Then drag the cards in order, from the smallest answer to the biggest answer.",
+  render(box){
+    const cards=[["20 + 3",23],["12 + 30",42],["50 − 5",45]];
+    const area=h("div"); const slots=[0,1,2].map(i=>h("div",{class:"slot","data-zone":"slot","data-pos":i,style:"min-width:96px"}));
+    area.append(h("div",{class:"note",style:"text-align:center"},"smallest  ➜  biggest"),
+      h("div",{class:"orderrow"}, slots[0], h("span",{class:"lt"},"<"), slots[1], h("span",{class:"lt"},"<"), slots[2]));
+    const tray=h("div",{class:"tray","data-zone":"tray"});
+    shuffle(cards).forEach(([t,v])=>tray.append(h("div",{class:"tile","data-v":v},t)));
+    area.append(tray); box.append(area); makeDnD(area);
+    const vals=()=>slots.map(s=>{const t=s.querySelector(".tile");return t?Number(t.dataset.v):null;});
+    return { answered:()=>vals().every(v=>v!==null), check:()=>{const v=vals();return v[0]<v[1]&&v[1]<v[2];},
+      given:()=>slots.map(s=>s.textContent).join("  <  "),
+      mark(){ const v=vals(), sorted=[23,42,45]; slots.forEach((s,i)=>s.classList.add(v[i]===sorted[i]?"right":"wrong")); },
+      reveal(){ [["20 + 3",23],["12 + 30",42],["50 − 5",45]].forEach(([t,v],i)=>{ slots[i].innerHTML=""; slots[i].append(h("div",{class:"tile","data-v":v},t)); slots[i].classList.remove("wrong"); slots[i].classList.add("right"); }); tray.innerHTML=""; } };
+  },
+  hint:"Work out each answer first. 20 + 3 = 23. Now do the other two.",
+  why:"20 + 3 = 23, 12 + 30 = 42 and 50 − 5 = 45. So 23 < 42 < 45."
+}
+];
+
+/* ---------- state & screens ---------- */
+const S = { name:"", avatar:"🦁", i:0, stars:0, results:[], feeling:null };
+const app = $("#app"), bar = $("#bar"), starEl = $("#starCount");
+const setStars = () => starEl.textContent = "⭐ " + S.stars;
+
+function splash(){
+  bar.style.width="0%";
+  const name=h("input",{class:"namebox",placeholder:"Type your name",maxlength:"20","aria-label":"Your name"});
+  const av=h("div",{class:"avatars"});
+  ["🦁","🦓","🦒","🐘","🦛","🐆"].forEach((a,ix)=>{ const b=h("button",{type:"button","aria-label":"Choose animal",class:ix===0?"sel":""},a);
+    b.onclick=()=>{av.querySelectorAll("button").forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); S.avatar=a; sndPop();}; av.append(b); });
+  const intro="Welcome to Safari Sums! Help the animals by adding and subtracting. There are ten questions. Tap the blue speaker to hear any question again. You can try each question two times. Let's go!";
+  const spk=h("button",{class:"speak",type:"button","aria-label":"Read aloud"},"🔊"); spk.onclick=()=>say(intro,spk);
+  app.replaceChildren(h("div",{class:"card hero"},
+    h("div",{class:"big"},"🦁🦓🦒🐘"),
+    h("h1",{},"Safari Sums"),
+    h("p",{},"Grade 2 Maths • Adding and subtracting up to 99"),
+    h("div",{style:"display:flex;justify-content:center;margin:6px 0"},spk),
+    h("p",{class:"note"},"10 questions • about 15 minutes • tap 🔊 to listen"),
+    name, h("div",{class:"note"},"Choose your safari buddy:"), av,
+    h("div",{class:"actions"}, h("button",{class:"btn go",type:"button",onclick:()=>{ S.name=name.value.trim()||"Explorer"; tone([392,523],0.1); question(); }},"Start the safari! 🚙"))
+  ));
+}
+
+function question(){
+  const q=Q[S.i]; let tries=0, done=false;
+  bar.style.width=(S.i/Q.length*100)+"%";
+  const box=h("div");
+  const spk=h("button",{class:"speak",type:"button","aria-label":"Read the question aloud"},"🔊"); spk.onclick=()=>say(q.text,spk);
+  const fb=h("div",{class:"feedback",role:"status"});
+  const checkBtn=h("button",{class:"btn go",type:"button"},"Check ✔");
+  const nextBtn=h("button",{class:"btn next hidden",type:"button"}, S.i===Q.length-1?"Finish 🏁":"Next ➜");
+  const card=h("div",{class:"card"},
+    h("div",{class:"qhead"}, h("div",{class:"qnum"},(S.i+1)+"/"+Q.length), h("div",{class:"qtext"},q.text), spk),
+    h("span",{class:"skill"},"🎯 "+q.skill), box, fb, h("div",{class:"actions"},checkBtn,nextBtn));
+  app.replaceChildren(card);
+  const api=q.render(box);
+  setTimeout(()=>say(q.text,spk),250);
+  checkBtn.onclick=()=>{
+    if(done) return;
+    if(!api.answered()){ fb.className="feedback try"; fb.textContent="Give it a go first! "+S.avatar; card.classList.add("shake"); setTimeout(()=>card.classList.remove("shake"),400); return; }
+    tries++; const ok=api.check(); const given=api.given(); api.mark(ok);
+    if(ok){
+      done=true; const earned= tries===1?2:1; S.stars+=earned; setStars(); sndRight(); confetti();
+      fb.className="feedback ok"; fb.textContent=(tries===1?"Excellent, "+S.name+"! ⭐⭐ ":"Well done for trying again! ⭐ ")+q.why;
+      say((tries===1?"Excellent! ":"Well done! ")+q.why);
+      S.results.push({q,ok:true,tries,given});
+    } else if(tries<2){
+      sndTry(); fb.className="feedback try"; fb.textContent="Not yet – try again! 💡 Hint: "+q.hint; say("Not yet. Here is a hint. "+q.hint);
+      card.classList.add("shake"); setTimeout(()=>card.classList.remove("shake"),400);
+      return;
+    } else {
+      done=true; sndTry(); api.reveal(); fb.className="feedback show"; fb.textContent="Let's look at it together: "+q.why+" You will get it next time! 💪"; say("Let's look at it together. "+q.why);
+      S.results.push({q,ok:false,tries,given});
+    }
+    checkBtn.classList.add("hidden"); nextBtn.classList.remove("hidden");
+  };
+  nextBtn.onclick=()=>{ try{speechSynthesis.cancel();}catch(e){} S.i++; S.i<Q.length?question():reflect(); };
+}
+
+function reflect(){
+  bar.style.width="100%";
+  const t="You finished the safari! How do you feel about adding and subtracting now? Tap a face.";
+  const spk=h("button",{class:"speak",type:"button","aria-label":"Read aloud"},"🔊"); spk.onclick=()=>say(t,spk);
+  const f=h("div",{class:"feel"}); const go=h("button",{class:"btn go",type:"button",disabled:""},"See my results 🏆");
+  [["😀","I can do it!"],["🙂","Getting there"],["😕","I need help"]].forEach(([e,l])=>{ const b=h("button",{type:"button","aria-label":l},e,h("span",{},l));
+    b.onclick=()=>{f.querySelectorAll("button").forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); S.feeling=e+" "+l; go.disabled=false; go.removeAttribute("disabled"); sndPop();}; f.append(b); });
+  go.onclick=finish;
+  app.replaceChildren(h("div",{class:"card hero"}, h("div",{class:"big"},"🏁"), h("h2",{},"Think about your learning"), h("div",{style:"display:flex;justify-content:center"},spk), h("p",{},t), f, h("div",{class:"actions"},go)));
+  setTimeout(()=>say(t,spk),250);
+}
+
+function finish(){
+  const first=S.results.filter(r=>r.ok&&r.tries===1).length, second=S.results.filter(r=>r.ok&&r.tries===2).length, notyet=S.results.filter(r=>!r.ok);
+  const max=Q.length*2;
+  const msg = S.stars>=17 ? "You are a Safari Sums champion!" : S.stars>=11 ? "Great safari! Keep practising." : "Good effort! Let's practise together.";
+  confetti(); tone([523,659,784,1047,1319],0.14);
+  const rows=S.results.map((r,ix)=>h("tr",{},h("td",{},String(ix+1)),h("td",{},r.q.caps),h("td",{},String(r.given)),
+    h("td",{}, r.ok ? (r.tries===1?"✅ 1st try":"🟡 2nd try") : "🔁 Not yet")));
+  const reteach = notyet.length ? notyet.map(r=>r.q.skill).join("; ") : "None – ready to extend (e.g. answers up to 99 with bridging the ten).";
+  const summary = `Safari Sums – ${S.name}\nStars: ${S.stars}/${max}\nCorrect 1st try: ${first}, 2nd try: ${second}, not yet: ${notyet.length}\nSelf-assessment: ${S.feeling}\nRe-teach: ${reteach}`;
+  const copyBtn=h("button",{class:"btn ghost",type:"button"},"📋 Copy results for my teacher");
+  copyBtn.onclick=async()=>{ try{ await navigator.clipboard.writeText(summary); copyBtn.textContent="✅ Copied!"; }catch(e){ copyBtn.textContent="Copy not allowed here – show your teacher this screen"; } };
+  app.replaceChildren(h("div",{class:"card"},
+    h("div",{class:"hero"}, h("div",{class:"big"},S.avatar+"🏆"), h("h1",{},"Well done, "+S.name+"!"), h("p",{class:"display",style:"font-size:1.4rem"},"⭐ "+S.stars+" / "+max+" stars"), h("p",{},msg)),
+    h("div",{class:"teacher"},
+      h("h3",{},"👩🏽‍🏫 Teacher feedback page (formative)"),
+      h("p",{class:"note"},"Learner self-assessment: "+S.feeling),
+      h("p",{class:"note"},`Correct on 1st try: ${first} • on 2nd try (after hint): ${second} • Not yet: ${notyet.length}`),
+      h("table",{class:"report"}, h("thead",{},h("tr",{},h("th",{},"#"),h("th",{},"CAPS skill"),h("th",{},"Answer given"),h("th",{},"Result"))), h("tbody",{},rows)),
+      h("p",{style:"margin-top:10px"},h("b",{},"Next steps / re-teach: "),reteach)),
+    h("div",{class:"actions"}, copyBtn, h("button",{class:"btn next",type:"button",onclick:()=>{ Object.assign(S,{i:0,stars:0,results:[],feeling:null}); setStars(); splash(); }},"Play again 🔄"))
+  ));
+}
+
+splash();
+})();
+</script>
+</body>
+</html>
